@@ -3,6 +3,17 @@ import scipy as sp
 import scipy.signal
 import cv2
 
+def getImageCorners(image):
+  corners = np.zeros((4, 1, 2), dtype=np.float32)
+  # WRITE YOUR CODE HERE
+
+  corners[0] = [0,0]
+  corners[1] = [0,image.shape[0]]
+  corners[2] = [image.shape[1],0]
+  corners[3] = [image.shape[1],image.shape[0]]
+
+  return corners
+
 def findKeyPoints(image):
     # orb = cv2.ORB_create
     orb = cv2.ORB(1000)
@@ -36,7 +47,7 @@ OVERLAY_HEIGHT=240
 OUTPUT_FILE='output.mp4'
 MATCH_IMAGE='match.jpg'
 
-DRAW = 'matches' #'keypoints'
+DRAW = 'image' #'matches' #'keypoints'
 
 capture = cv2.VideoCapture(0)
 capture.set(1, VIDEO_FPS)
@@ -78,6 +89,50 @@ while(True):
             frame = cv2.drawKeypoints(frame, points)
             if max(x) < VIDEO_HEIGHT and max(y) < VIDEO_WIDTH:
                 cv2.rectangle(frame, tuple(pt1), tuple(pt2), (255,0,0), 2)
+    elif DRAW == 'image':
+        frame_kp, frame_desc = findKeyPoints(frame)
+        matches = findMatches(frame_desc, MATCH_DESC)
+        # frame = cv2.drawKeypoints(frame, matches)
+        points = [frame_kp[m.queryIdx] for m in matches]
+        x = [int(frame_kp[m.queryIdx].pt[0]) for m in matches]
+        y = [int(frame_kp[m.queryIdx].pt[1]) for m in matches]
+
+        if len(points) > 20:
+            pt1 = (min(x), min(y))
+            pt2 = (max(x), max(y))
+            frame = cv2.drawKeypoints(frame, points)
+            if max(x) < VIDEO_HEIGHT and max(y) < VIDEO_WIDTH:
+                cv2.rectangle(frame, tuple(pt1), tuple(pt2), (255,0,0), 2)
+            image_1_points = np.float32([ frame_kp[m.queryIdx].pt for m in matches ]).reshape(-1,1,2)
+            image_2_points = np.float32([ MATCH_KP[m.trainIdx].pt for m in matches ]).reshape(-1,1,2)
+            image_1_corners = getImageCorners(frame)
+            image_2_corners = getImageCorners(match_img)
+
+            M, mask = cv2.findHomography(image_2_points, image_1_points, cv2.RANSAC, 5.0)
+            t = cv2.perspectiveTransform(image_2_corners, M)
+
+            corners = np.concatenate((t, image_1_corners))
+
+            corners = np.min(corners, axis=1)
+            xCol = corners[:,:1]
+            yCol = corners[:,1:]
+            x_min = np.min(xCol)
+            x_max = np.max(xCol)
+            y_min = np.min(yCol)
+            y_max = np.max(yCol)
+
+            translation = np.array([[1, 0, -1 * x_min],
+                                  [0, 1, -1 * y_min],
+                                  [0, 0, 1]])
+
+            point = (-1 * x_min, -1 * y_min)
+            dotProduct = np.dot(translation, M)
+            warped_image = cv2.warpPerspective(match_img,dotProduct,(x_max - x_min, y_max - y_min))
+
+            # frame = warped_image
+
+            frame[point[1]:point[1] + frame.shape[0],
+                point[0]:point[0] + frame.shape[1]] = warped_image
 
     cv2.imshow('frame',frame)
     out.write(frame)
