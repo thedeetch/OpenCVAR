@@ -69,8 +69,15 @@ while(True):
         matches = findMatches(frame_desc, MATCH_DESC)
         # frame = cv2.drawKeypoints(frame, matches)
         points = [frame_kp[m.queryIdx] for m in matches]
-        frame = cv2.drawKeypoints(frame, points)
-        # frame = cv2.drawMatches(frame,frame_kp,match_img,match_kp,matches[:10], flags=2)
+        x = [int(frame_kp[m.queryIdx].pt[0]) for m in matches]
+        y = [int(frame_kp[m.queryIdx].pt[1]) for m in matches]
+
+        if len(points) > 20:
+            pt1 = (min(x), min(y))
+            pt2 = (max(x), max(y))
+            frame = cv2.drawKeypoints(frame, points)
+            if max(x) < VIDEO_HEIGHT and max(y) < VIDEO_WIDTH:
+                cv2.rectangle(frame, tuple(pt1), tuple(pt2), (255,0,0), 2)
 
     cv2.imshow('frame',frame)
     out.write(frame)
@@ -79,6 +86,6 @@ while(True):
         break
 
 capture.release()
-overlay.release()
+# overlay.release()
 out.release()
 cv2.destroyAllWindows()
