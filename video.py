@@ -127,12 +127,12 @@ while(True):
 
             point = (-1 * x_min, -1 * y_min)
             dotProduct = np.dot(translation, M)
-            warped_image = cv2.warpPerspective(match_img,dotProduct,(x_max - x_min, y_max - y_min))
+            warped_image = cv2.warpPerspective(match_img,dotProduct,(x_max - x_min, y_max - y_min), frame, borderMode=cv2.BORDER_TRANSPARENT) #,borderValue=[255,255,255])
 
             # frame = warped_image
-
-            frame[point[1]:point[1] + frame.shape[0],
-                point[0]:point[0] + frame.shape[1]] = warped_image
+            # frame = cv2.bitwise_and(frame, warped_image)
+            # frame[point[1]:point[1] + frame.shape[0],
+                # point[0]:point[0] + frame.shape[1]] = warped_image
 
     cv2.imshow('frame',frame)
     out.write(frame)
