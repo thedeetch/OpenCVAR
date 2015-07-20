@@ -13,6 +13,7 @@ python video.py -o nick_dancing.mp4
 python video.py -d -k matches -i buzz.bmp -o keypoints.mp4
 ```
 
+![Matched Keypoints](http://i.imgur.com/8NnY5j2.gif)
 <iframe width="420" height="315" src="https://www.youtube.com/embed/BKH8z2Yr1S4" frameborder="0" allowfullscreen></iframe>
 
 ## Bounding Box
@@ -21,6 +22,7 @@ python video.py -d -k matches -i buzz.bmp -o keypoints.mp4
 python video.py -d -k matches -r -i buzz.bmp -o box.mp4
 ```
 
+![Bounding Box](http://i.imgur.com/HzONwXh.gif)
 <iframe width="420" height="315" src="https://www.youtube.com/embed/g28XrxfDJ80" frameborder="0" allowfullscreen></iframe>
 
 ## Blur
@@ -29,6 +31,7 @@ python video.py -d -k matches -r -i buzz.bmp -o box.mp4
 python video.py -d -r -b -i bulldog.png -o blur.mp4
 ```
 
+![Blur](http://i.imgur.com/HKTmpQH.gif)
 <iframe width="420" height="315" src="https://www.youtube.com/embed/SEqr9iqpNN4" frameborder="0" allowfullscreen></iframe>
 
 ## Image overlay
@@ -37,6 +40,7 @@ python video.py -d -r -b -i bulldog.png -o blur.mp4
 python video.py -d -i bulldog.png -p buzz.bmp -o image.mp4
 ```
 
+![Image Overlay](http://i.imgur.com/4vVGegP.gif)
 <iframe width="420" height="315" src="https://www.youtube.com/embed/Vpcl604ui0o" frameborder="0" allowfullscreen></iframe>
 
 ## Video Overlay
@@ -44,7 +48,7 @@ python video.py -d -i bulldog.png -p buzz.bmp -o image.mp4
 ```
 python video.py -d -i qr_code.png -v nick_dancing.mp4 -o video.mp4
 ```
-
+![Video Overlay](http://i.imgur.com/ADGH8h2.gif)
 <iframe width="420" height="315" src="https://www.youtube.com/embed/bWGAgWVjzYI" frameborder="0" allowfullscreen></iframe>
 
 ## Dependencies
