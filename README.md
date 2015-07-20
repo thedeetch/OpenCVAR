@@ -65,7 +65,7 @@ Augmented reality using OpenCV.
 optional arguments:
   -h, --help            show this help message and exit
   -i INPUT, --input INPUT
-                        Image to find (default=match.png)
+                        Image to find
   -p PASTE, --paste PASTE
                         Image to paste over found feature
   -v PASTEVIDEO, --pastevideo PASTEVIDEO

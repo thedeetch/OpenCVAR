@@ -5,7 +5,7 @@ import cv2
 import argparse
 
 parser = argparse.ArgumentParser(description='Augmented reality using OpenCV.')
-parser.add_argument('-i','--input', help='Image to find (default=match.png)')
+parser.add_argument('-i','--input', help='Image to find')
 parser.add_argument('-p','--paste', help='Image to paste over found feature')
 parser.add_argument('-v','--pastevideo', help='Video to paste over found feature')
 parser.add_argument('-o','--output',help='Output video file name (default=output.mp4)', default='output.mp4')
