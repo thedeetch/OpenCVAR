@@ -77,10 +77,3 @@ optional arguments:
   -n NUMMATCHES, --nummatches NUMMATCHES
                         Minimum number of matches (default=20)
 ```
-
-## Examples
-
-```
-python video.py -b -r
-```
-[YouTube]()
