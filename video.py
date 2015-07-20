@@ -150,6 +150,6 @@ while(True):
         break
 
 capture.release()
-# overlay.release()
+overlay.release()
 out.release()
 cv2.destroyAllWindows()
