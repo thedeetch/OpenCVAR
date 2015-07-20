@@ -2,8 +2,8 @@
 Computational photography final project
 
 ## Dependencies
-Python 2.7.10
-OpenCV 2.4.11
+* Python 2.7.10
+* OpenCV 2.4.11
 
 ## Usage
 ```
