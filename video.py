@@ -7,6 +7,7 @@ import argparse
 parser = argparse.ArgumentParser(description='Augmented reality using OpenCV.')
 parser.add_argument('-i','--input', help='Image to find (default=match.png)', default='match.png')
 parser.add_argument('-p','--paste', help='Image to paste over found feature')
+parser.add_argument('-v','--pastevideo', help='Video to paste over found feature')
 parser.add_argument('-o','--output',help='Output video file name (default=output.mp4)', default='output.mp4')
 parser.add_argument('-b','--blur',help='Blur found feature (default=False)', action='store_true')
 parser.add_argument('-r','--rectangle',help='Draw rectange around feature (default=False)', action='store_true')
@@ -50,7 +51,7 @@ def findMatches(desc1, desc2):
             # matchesMask[i]=[1,0]
     return good
 
-VIDEO_FPS=10.0
+VIDEO_FPS=20.0
 VIDEO_WIDTH=640
 VIDEO_HEIGHT=480
 OVERLAY_WIDTH=320
@@ -61,17 +62,18 @@ capture.set(1, VIDEO_FPS)
 capture.set(3, VIDEO_WIDTH)
 capture.set(4, VIDEO_HEIGHT)
 
-# overlay = cv2.VideoCapture('ccau_512kb.mp4')
-# overlay.set(1, VIDEO_FPS)
-
 fourcc = cv2.cv.CV_FOURCC(*'mp4v')
 out = cv2.VideoWriter(args.output, fourcc, VIDEO_FPS / 2.0, (VIDEO_WIDTH, VIDEO_HEIGHT))
 
 match_img = cv2.imread(args.input)
 MATCH_KP, MATCH_DESC = findKeyPoints(match_img)
 
+paste_img = np.zeros((0,0,0))
 if args.paste:
     paste_img = cv2.imread(args.paste)
+elif args.pastevideo:
+    overlay = cv2.VideoCapture(args.pastevideo)
+    overlay.set(1, VIDEO_FPS)
 
 while(True):
     ret, frame = capture.read()
@@ -109,7 +111,10 @@ while(True):
             frame = cv2.drawKeypoints(frame, points)
         if args.rectangle:
             cv2.rectangle(frame, tuple(pt1), tuple(pt2), (0,255,0), 2)
-        if args.paste:
+        if args.paste or args.pastevideo:
+            if args.pastevideo:
+                ret, paste_img = overlay.read()
+
             image_1_points = np.float32([ frame_kp[m.queryIdx].pt for m in matches ]).reshape(-1,1,2)
             image_2_points = np.float32([ MATCH_KP[m.trainIdx].pt for m in matches ]).reshape(-1,1,2)
             paste_corners = getImageCorners(paste_img)
