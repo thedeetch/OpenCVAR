@@ -57,8 +57,8 @@ python video.py -d -i qr_code.png -v nick_dancing.mp4 -o video.mp4
 
 ## Usage
 ```
-usage: video.py [-h] [-i INPUT] [-p PASTE] [-o OUTPUT] [-b] [-r]
-                [-k {keypoints,matches}] [-n NUMMATCHES]
+usage: video.py [-h] [-i INPUT] [-p PASTE] [-v PASTEVIDEO] [-o OUTPUT] [-b]
+                [-r] [-k {keypoints,matches}] [-n NUMMATCHES] [-d]
 
 Augmented reality using OpenCV.
 
@@ -68,6 +68,8 @@ optional arguments:
                         Image to find (default=match.png)
   -p PASTE, --paste PASTE
                         Image to paste over found feature
+  -v PASTEVIDEO, --pastevideo PASTEVIDEO
+                        Video to paste over found feature
   -o OUTPUT, --output OUTPUT
                         Output video file name (default=output.mp4)
   -b, --blur            Blur found feature (default=False)
@@ -76,4 +78,5 @@ optional arguments:
                         Draw all feature keypoints or just matches
   -n NUMMATCHES, --nummatches NUMMATCHES
                         Minimum number of matches (default=20)
+  -d, --debug           Show debug statistics (default=False)
 ```
